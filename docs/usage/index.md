@@ -31,4 +31,4 @@ Tasks are defined as tuples of input and output files. The first element of the 
 
 Use the `run_step` function to execute a pipeline step. This function will check for the existence of input files and the non-existence of output files before running each task.
 
-For more advanced usage, please refer to the [API Reference](api_reference.md).
+For more advanced usage, please refer to the [API Reference](../api/index.md).

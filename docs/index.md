@@ -8,4 +8,4 @@ pypdown is a Pydantic model-based approach to data pipelining with file I/O lint
 - File I/O linting for robust pipeline execution
 - Easy-to-use API for defining and running pipeline steps
 
-Check out the [Usage](usage.md) section to get started with pypdown.
+Check out the [Usage](usage/index.md) section to get started with pypdown.
