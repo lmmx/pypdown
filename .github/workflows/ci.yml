@@ -16,6 +16,8 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - uses: yezz123/setup-uv@v4
+      with:
+        uv-venv: "pypdown"
     - name: Install dependencies
       run: |
         uv pip install .
@@ -34,6 +36,8 @@ jobs:
       with:
         python-version: 3.12
     - uses: yezz123/setup-uv@v4
+      with:
+        uv-venv: "pypdown"
     - name: Install dependencies
       run: |
         uv pip install .
