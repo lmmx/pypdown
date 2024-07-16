@@ -63,16 +63,16 @@ def run_step(file_tasks: list[tuple[list[str], list[str]]]):
             end=f"{'':10}",
         )
         if bail:
-            print(f" (-) Bailing out of step, skipping task")
+            print(" (-) Bailing out of step, skipping task")
             continue
         available = available_ta.validate_python([task.model_dump()])
-        completed = completed_ta.validate_python([task.model_dump()])
+        # completed = completed_ta.validate_python([task.model_dump()])
         if available:
-            print(f" \033[92;1m>>>\033[0m Running available task")
+            print(" \033[92;1m>>>\033[0m Running available task")
             task_picked_up = True
         else:
             if task_picked_up:
-                print(f" (x) Task already completed, skipping")
+                print(" (x) Task already completed, skipping")
             else:
-                print(f" (!) Task requisite missing, bailing")
+                print(" (!) Task requisite missing, bailing")
                 bail = True
