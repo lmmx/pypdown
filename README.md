@@ -5,7 +5,7 @@ A Pydantic model-based approach to data pipelining with file I/O linting.
 [![PyPI version](https://badge.fury.io/py/pypdown.svg)](https://badge.fury.io/py/pypdown)
 [![Python Versions](https://img.shields.io/pypi/pyversions/pypdown.svg)](https://pypi.org/project/pypdown/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Documentation Status](https://readthedocs.org/projects/pypdown/badge/?version=latest)](https://pypdown.readthedocs.io/en/latest/?badge=latest)
+[![Documentation](https://img.shields.io/badge/docs-pypdown.vercel.app-blue)](https://pypdown.vercel.app/)
 [![CI Status](https://github.com/lmmx/pypdown/actions/workflows/ci.yml/badge.svg)](https://github.com/lmmx/pypdown/actions/workflows/ci.yml)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/lmmx/pypdown/master.svg)](https://results.pre-commit.ci/latest/github/lmmx/pypdown/master)
 
@@ -42,7 +42,7 @@ run_step(step)
 
 ## Documentation
 
-For full documentation, please visit [pypdown.readthedocs.io](https://pypdown.readthedocs.io).
+For full documentation, please visit [pypdown.vercel.app](https://pypdown.vercel.app/).
 
 ## Contributing
 
