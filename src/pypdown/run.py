@@ -1,9 +1,20 @@
+"""Control flow using the Pydantic runtime file I/O checks."""
 from .models import AvailableTA, CompletedTA, Step
 
 __all__ = ["run_step"]
 
 
 def run_step(step: Step):
+    """Run a pipeline step's tasks based on the availability of task files.
+
+    Tasks are iterated through, and the relevant in/output files' existence existence
+    is checked when the task is reached in the loop (rather than at the start). This
+    means that intermediate files can be created by tasks, and their existence will be
+    checked when those output files become inputs to subsequent tasks.
+
+    If any task's required input files are missing, the step bails out: no further tasks
+    will run.
+    """
     if step.tasks:
         print(f"Running step {step.name!r} with {len(step.tasks)} tasks")
     else:

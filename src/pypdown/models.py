@@ -1,3 +1,4 @@
+"""Pydantic models to represent the tasks within a step in a data pipeline."""
 from pathlib import Path
 
 from pydantic import BaseModel, FilePath, NewPath, OnErrorOmit, TypeAdapter
