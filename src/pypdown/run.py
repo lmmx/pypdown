@@ -1,38 +1,6 @@
-from pathlib import Path
+from .models import AvailableTA, CompletedTA, Step
 
-from pydantic import BaseModel, FilePath, NewPath, OnErrorOmit, TypeAdapter
-
-
-class AvailableTask(BaseModel):
-    """A task is available when its input files exist and its outputs don't."""
-
-    src: list[FilePath]
-    dst: list[NewPath]
-
-
-class CompletedTask(BaseModel):
-    """A task is completed when its output files exist, whether inputs exist or not."""
-
-    src: list[Path]
-    dst: list[FilePath]
-
-
-class Task(BaseModel):
-    """A task has zero or more input files and zero or more output files."""
-
-    src: list[Path]
-    dst: list[Path]
-
-
-class Step(BaseModel):
-    """A named step in a data pipeline, split up into tasks with specified file I/O."""
-
-    name: str
-    tasks: list[Task]
-
-
-available_ta = TypeAdapter(list[OnErrorOmit[AvailableTask]])
-completed_ta = TypeAdapter(list[OnErrorOmit[CompletedTask]])
+__all__ = ["run_step"]
 
 
 def run_step(file_tasks: list[tuple[list[str], list[str]]]):
@@ -55,8 +23,8 @@ def run_step(file_tasks: list[tuple[list[str], list[str]]]):
             print(" (-) Bailing out of step, skipping task")
             continue
 
-        available = available_ta.validate_python([task.model_dump()])
-        completed = completed_ta.validate_python([task.model_dump()])
+        available = AvailableTA.validate_python([task.model_dump()])
+        completed = CompletedTA.validate_python([task.model_dump()])
 
         if available:
             print(" \033[92;1m>>>\033[0m Running available task")
