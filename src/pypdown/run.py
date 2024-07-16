@@ -1,9 +1,14 @@
 """Control flow using the Pydantic runtime file I/O checks."""
 
-from .models import AvailableTA, CompletedTA, Step
+from .models import AvailableTA, AvailableTask, CompletedTA, Step, RunContext
 
 __all__ = ["run_step"]
 
+def task_runner(task: AvailableTask, context: RunContext) -> None:
+    print(f"Hello world {task.model_dump(mode='json')}")
+    print(f"Touching: {task.dst}")
+    for target in task.dst:
+        target.touch()
 
 def run_step(step: Step):
     """Run a pipeline step's tasks based on the availability of task files.
@@ -23,22 +28,26 @@ def run_step(step: Step):
 
     bail = False
     for idx, task in enumerate(step.tasks):
+        if idx > 0 and not bail:
+            prev_task = step.tasks[idx - 1]
+            prev_completed = CompletedTA.validate_python([prev_task.model_dump()])
+            if not prev_completed:
+                bail = True
+                print("(!) Incomplete previous task detected, bailing")
         task_repr = " --> ".join(map(str, (task.model_dump(mode="json").values())))
-        print(
-            f"\n--- Task {idx + 1} --- Prepared task\n{'':15}{task_repr}\n",
-            end=f"{'':10}",
-        )
+        print(f"\n--- Task {idx + 1} --- {task_repr}")
         if bail:
-            print(" (-) Bailing out of step, skipping task")
+            print("(-) Bailing out of step, skipping task")
             continue
 
         available = AvailableTA.validate_python([task.model_dump()])
         completed = CompletedTA.validate_python([task.model_dump()])
 
         if available:
-            print(" \033[92;1m>>>\033[0m Running available task")
+            print("\033[92;1m>>>\033[0m Running available task")
+            task_runner(task=task, context=RunContext(step=step, idx=idx))
         elif completed:
-            print(" (x) Task already completed, skipping")
+            print("(x) Task already completed, skipping")
         else:
-            print(" (!) Task requisite missing, bailing")
+            print("(!) Task requisite missing, bailing")
             bail = True
