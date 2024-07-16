@@ -1,0 +1,21 @@
+[project]
+name = "pypdown"
+version = "0.1.0"
+description = "A Pydantic model-based approach to data pipelining with file I/O linting."
+authors = [
+    {name = "Louis Maddox", email = "louismmx@gmail.com"},
+]
+dependencies = [
+    "pydantic>=2.8.2",
+]
+requires-python = ">=3.12"
+readme = "README.md"
+license = {text = "MIT"}
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
+[tool.pdm]
+distribution = true

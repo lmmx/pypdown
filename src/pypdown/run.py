@@ -31,6 +31,9 @@ class Step(BaseModel):
     tasks: list[Task]
 
 
+available_ta = TypeAdapter(list[OnErrorOmit[AvailableTask]])
+completed_ta = TypeAdapter(list[OnErrorOmit[CompletedTask]])
+
 file_tasks = [
     ([], ["nil1.out"]),
     (["a.in"], ["a.out"]),
@@ -41,11 +44,8 @@ file_tasks = [
     ([], ["nil2.out"]),
 ]
 
-available_ta = TypeAdapter(list[OnErrorOmit[AvailableTask]])
-completed_ta = TypeAdapter(list[OnErrorOmit[CompletedTask]])
 
-
-def run_step():
+def run_step(file_tasks: list[tuple[list[str], list[str]]]):
     tasks = [dict(src=s, dst=d) for s, d in file_tasks]
     step = Step(name="Demo Step", tasks=tasks)
 
