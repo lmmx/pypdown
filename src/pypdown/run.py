@@ -34,16 +34,6 @@ class Step(BaseModel):
 available_ta = TypeAdapter(list[OnErrorOmit[AvailableTask]])
 completed_ta = TypeAdapter(list[OnErrorOmit[CompletedTask]])
 
-file_tasks = [
-    ([], ["nil1.out"]),
-    (["a.in"], ["a.out"]),
-    (["a.out"], ["b.out"]),
-    (["a.out", "b.out"], ["c.out"]),
-    (["d.in"], ["d.out"]),
-    (["e.in"], ["e.out"]),
-    ([], ["nil2.out"]),
-]
-
 
 def run_step(file_tasks: list[tuple[list[str], list[str]]]):
     tasks = [dict(src=s, dst=d) for s, d in file_tasks]
@@ -54,7 +44,6 @@ def run_step(file_tasks: list[tuple[list[str], list[str]]]):
     else:
         raise ValueError("No tasks were assigned")
 
-    task_picked_up = False
     bail = False
     for idx, task in enumerate(step.tasks):
         task_repr = " --> ".join(map(str, (task.model_dump(mode="json").values())))
@@ -65,14 +54,14 @@ def run_step(file_tasks: list[tuple[list[str], list[str]]]):
         if bail:
             print(" (-) Bailing out of step, skipping task")
             continue
+
         available = available_ta.validate_python([task.model_dump()])
-        # completed = completed_ta.validate_python([task.model_dump()])
+        completed = completed_ta.validate_python([task.model_dump()])
+
         if available:
             print(" \033[92;1m>>>\033[0m Running available task")
-            task_picked_up = True
+        elif completed:
+            print(" (x) Task already completed, skipping")
         else:
-            if task_picked_up:
-                print(" (x) Task already completed, skipping")
-            else:
-                print(" (!) Task requisite missing, bailing")
-                bail = True
+            print(" (!) Task requisite missing, bailing")
+            bail = True
