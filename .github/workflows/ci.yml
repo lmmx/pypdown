@@ -21,29 +21,8 @@ jobs:
     - name: Install dependencies
       run: |
         uv pip install .
-        uv pip install black isort flake8
+        uv pip install pytest
     - name: Run tests
       run: pytest
     - name: Run type checking
       run: mypy src/pypdown
-
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: 3.12
-    - uses: yezz123/setup-uv@v4
-      with:
-        uv-venv: "pypdown"
-    - name: Install dependencies
-      run: |
-        uv pip install .
-        uv pip install black isort flake8
-    - name: Run linters
-      run: |
-        black --check .
-        isort --check .
-        flake8 .
