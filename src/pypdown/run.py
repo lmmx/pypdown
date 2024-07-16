@@ -3,10 +3,7 @@ from .models import AvailableTA, CompletedTA, Step
 __all__ = ["run_step"]
 
 
-def run_step(file_tasks: list[tuple[list[str], list[str]]]):
-    tasks = [dict(src=s, dst=d) for s, d in file_tasks]
-    step = Step(name="Demo Step", tasks=tasks)
-
+def run_step(step: Step):
     if step.tasks:
         print(f"Running step {step.name!r} with {len(step.tasks)} tasks")
     else:

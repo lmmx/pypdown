@@ -1,4 +1,5 @@
 from pypdown import run_step
+from pypdown.models import Step
 
 file_tasks = [
     ([], ["nil1.out"]),
@@ -10,4 +11,5 @@ file_tasks = [
     ([], ["nil2.out"]),
 ]
 
-run_step(file_tasks)
+step = Step(name="Demo Step", tasks=[{"src": s, "dst": d} for s, d in file_tasks])
+run_step(step)
