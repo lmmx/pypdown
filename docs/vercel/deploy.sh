@@ -1,6 +1,6 @@
 #!/bin/bash
 
-curl -s https://micromamba.snakepit.net/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
+curl -Ls https://micromamba.snakepit.net/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
 
 ./bin/micromamba shell init -s bash -p ~/micromamba
 # Python interpreter lives at /vercel/micromamba/bin/python
