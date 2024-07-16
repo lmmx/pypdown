@@ -4,11 +4,13 @@ from .models import AvailableTA, AvailableTask, CompletedTA, Step, RunContext
 
 __all__ = ["run_step"]
 
+
 def task_runner(task: AvailableTask, context: RunContext) -> None:
     print(f"Hello world {task.model_dump(mode='json')}")
     print(f"Touching: {task.dst}")
     for target in task.dst:
         target.touch()
+
 
 def run_step(step: Step):
     """Run a pipeline step's tasks based on the availability of task files.

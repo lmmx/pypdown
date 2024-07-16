@@ -1,6 +1,7 @@
 from pypdown import run_step
 from pypdown.models import Step
 
+
 def test_simple_example():
     file_tasks = [
         ([], ["nil1.out"]),

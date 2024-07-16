@@ -49,5 +49,6 @@ CompletedTA = TypeAdapter(list[OnErrorOmit[CompletedTask]])
 
 class RunContext(BaseModel):
     """The context available to a task runner."""
+
     step: Step
     idx: int
