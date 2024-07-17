@@ -7,8 +7,8 @@ __all__ = ["run_step"]
 
 def task_runner(task: AvailableTask, context: RunContext) -> None:
     print(f"Hello world {task.model_dump(mode='json')}")
-    print(f"Touching: {task.dst}")
-    for target in task.dst:
+    for name, target in task.dst.items():
+        print(f"Touched {name}: {target}")
         target.touch()
 
 

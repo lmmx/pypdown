@@ -18,22 +18,22 @@ __all__ = [
 class AvailableTask(BaseModel):
     """A task is available when its input files exist and its outputs don't."""
 
-    src: list[FilePath]
-    dst: list[NewPath]
+    src: dict[str, FilePath]
+    dst: dict[str, NewPath]
 
 
 class CompletedTask(BaseModel):
     """A task is completed when its output files exist, whether inputs exist or not."""
 
-    src: list[Path]
-    dst: list[FilePath]
+    src: dict[str, Path]
+    dst: dict[str, FilePath]
 
 
 class Task(BaseModel):
     """A task has zero or more input files and zero or more output files."""
 
-    src: list[Path]
-    dst: list[Path]
+    src: dict[str, Path]
+    dst: dict[str, Path]
 
 
 class Step(BaseModel):
