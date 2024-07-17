@@ -7,7 +7,7 @@ __all__ = ["run_step"]
 
 def task_runner(task: AvailableTask, context: RunContext) -> None:
     print(f"Hello world {task.model_dump(mode='json', exclude='fn')}")
-    task.fn.__call__(**task.src, **task.dst)
+    task.fn.__call__(**task.src, **task.dst, config=context.step.config)
 
 
 def run_step(step: Step):

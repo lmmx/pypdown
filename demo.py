@@ -20,42 +20,42 @@ class StepParams(BaseModel):
 config = StepParams()
 
 
-def cb_n1(n1_o: Path):
+def cb_n1(n1_o: Path, config: StepParams):
     n1_o.touch()
     print(f"Touched {n1_o=}")
 
 
-def cb_a(a_i: Path, a_o: Path):
+def cb_a(a_i: Path, a_o: Path, config: StepParams):
     assert a_i.exists()
     a_o.touch()
     print(f"Touched {a_o=}")
 
 
-def cb_b(a_o: Path, b_o: Path):
+def cb_b(a_o: Path, b_o: Path, config: StepParams):
     assert a_o.exists()
     b_o.touch()
     print(f"Touched {b_o=}")
 
 
-def cb_c(a_o: Path, b_o: Path, c_o: Path):
+def cb_c(a_o: Path, b_o: Path, c_o: Path, config: StepParams):
     assert a_o.exists() and b_o.exists()
     c_o.touch()
     print(f"Touched {c_o=}")
 
 
-def cb_d(d_i: Path, d_o: Path):
+def cb_d(d_i: Path, d_o: Path, config: StepParams):
     assert d_i.exists()
     d_o.touch()
     print(f"Touched {d_o=}")
 
 
-def cb_e(e_i: Path, e_o: Path):
+def cb_e(e_i: Path, e_o: Path, config: StepParams):
     assert e_i.exists()
     e_o.touch()
     print(f"Touched {e_o=}")
 
 
-def cb_n2(n2_o: Path):
+def cb_n2(n2_o: Path, config: StepParams):
     n2_o.touch()
     print(f"Touched {n2_o=}")
 

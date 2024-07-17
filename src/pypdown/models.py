@@ -1,6 +1,7 @@
 """Pydantic models to represent the tasks within a step in a data pipeline."""
 
 from pathlib import Path
+from typing import TypeVar
 from collections.abc import Callable
 
 from pydantic import BaseModel, FilePath, NewPath, OnErrorOmit, TypeAdapter
@@ -43,16 +44,18 @@ class Task(Executable):
     dst: dict[str, Path]
 
 
+C = TypeVar("C", bound=BaseModel)
+
 class Step(BaseModel):
     """A named step in a data pipeline, split up into tasks with specified file I/O."""
 
     name: str
     tasks: list[Task]
+    config: C
 
 
 AvailableTA = TypeAdapter(list[OnErrorOmit[AvailableTask]])
 CompletedTA = TypeAdapter(list[OnErrorOmit[CompletedTask]])
-
 
 class RunContext(BaseModel):
     """The context available to a task runner."""
