@@ -3,6 +3,7 @@ from pypdown.models import Step
 from pydantic import BaseModel
 from pathlib import Path
 
+
 def test_simple_example():
     class StepParams(BaseModel):
         a1_i: Path = "a1.in"
@@ -11,18 +12,15 @@ def test_simple_example():
         b_i: Path = "b.in"
         b_o: Path = "b.out"
 
-
     def cb_a(a1_i: Path, a2_i: Path, a_o: Path, config: StepParams):
         assert a1_i.exists() and a2_i.exists()
         a_o.touch()
         print(f"Touched {a_o=}")
 
-
     def cb_b(a_o: Path, b_i: Path, b_o: Path, config: StepParams):
         assert a_o.exists() and b_i.exists()
         b_o.touch()
         print(f"Touched {b_o=}")
-
 
     task_fields = [
         (["a1_i", "a2_i"], ["a_o"], cb_a),
