@@ -46,6 +46,7 @@ class Task(Executable):
 
 C = TypeVar("C", bound=BaseModel)
 
+
 class Step(BaseModel):
     """A named step in a data pipeline, split up into tasks with specified file I/O."""
 
@@ -56,6 +57,7 @@ class Step(BaseModel):
 
 AvailableTA = TypeAdapter(list[OnErrorOmit[AvailableTask]])
 CompletedTA = TypeAdapter(list[OnErrorOmit[CompletedTask]])
+
 
 class RunContext(BaseModel):
     """The context available to a task runner."""
