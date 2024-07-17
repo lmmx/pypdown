@@ -3,6 +3,7 @@ from pypdown.models import Step
 from pydantic import BaseModel
 from pathlib import Path
 
+
 class StepParams(BaseModel):
     a1_i: Path = "a1.in"
     a2_i: Path = "a2.in"
@@ -10,19 +11,36 @@ class StepParams(BaseModel):
     b_i: Path = "b.in"
     b_o: Path = "b.out"
 
+
 config = StepParams()
 
 
-file_tasks = [
-    (["a1_i", "a2_i"], ["a_o"]),
-    (["a_o", "b_i"], ["b_o"]),
+def cb_a(a1_i: Path, a2_i: Path, a_o: Path):
+    assert a1_i.exists() and a2_i.exists()
+    a_o.touch()
+    print(f"Touched {a_o=}")
+
+
+def cb_b(a_o: Path, b_i: Path, b_o: Path):
+    assert a_o.exists() and b_i.exists()
+    b_o.touch()
+    print(f"Touched {b_o=}")
+
+
+task_fields = [
+    (["a1_i", "a2_i"], ["a_o"], cb_a),
+    (["a_o", "b_i"], ["b_o"], cb_b),
 ]
 
 # Turn the in/output lists into dicts keyed by config field name with filename values
-named_file_tasks = [
-    tuple({field: getattr(config, field) for field in files} for files in task)
-    for task in file_tasks
+tasks = [
+    {
+        "src": {field: getattr(config, field) for field in inputs},
+        "dst": {field: getattr(config, field) for field in outputs},
+        "fn": func,
+    }
+    for inputs, outputs, func in task_fields
 ]
 
-step = Step(name="Demo Step", tasks=[{"src": s, "dst": d} for s, d in named_file_tasks])
+step = Step(name="Demo Step", tasks=tasks)
 run_step(step)

@@ -3,6 +3,7 @@ from pypdown.models import Step
 from pydantic import BaseModel
 from pathlib import Path
 
+
 class StepParams(BaseModel):
     n1_o: Path = "nil1.out"
     n2_o: Path = "nil2.out"
@@ -15,23 +16,69 @@ class StepParams(BaseModel):
     e_i: Path = "e.in"
     e_o: Path = "e.out"
 
+
 config = StepParams()
 
-file_tasks = [
-    ([], ["n1_o"]),
-    (["a_i"], ["a_o"]),
-    (["a_o"], ["b_o"]),
-    (["a_o", "b_o"], ["c_o"]),
-    (["d_i"], ["d_o"]),
-    (["e_i"], ["e_o"]),
-    ([], ["n2_o"]),
+
+def cb_n1(n1_o: Path):
+    n1_o.touch()
+    print(f"Touched {n1_o=}")
+
+
+def cb_a(a_i: Path, a_o: Path):
+    assert a_i.exists()
+    a_o.touch()
+    print(f"Touched {a_o=}")
+
+
+def cb_b(a_o: Path, b_o: Path):
+    assert a_o.exists()
+    b_o.touch()
+    print(f"Touched {b_o=}")
+
+
+def cb_c(a_o: Path, b_o: Path, c_o: Path):
+    assert a_o.exists() and b_o.exists()
+    c_o.touch()
+    print(f"Touched {c_o=}")
+
+
+def cb_d(d_i: Path, d_o: Path):
+    assert d_i.exists()
+    d_o.touch()
+    print(f"Touched {d_o=}")
+
+
+def cb_e(e_i: Path, e_o: Path):
+    assert e_i.exists()
+    e_o.touch()
+    print(f"Touched {e_o=}")
+
+
+def cb_n2(n2_o: Path):
+    n2_o.touch()
+    print(f"Touched {n2_o=}")
+
+
+task_fields = [
+    ([], ["n1_o"], cb_n1),
+    (["a_i"], ["a_o"], cb_a),
+    (["a_o"], ["b_o"], cb_b),
+    (["a_o", "b_o"], ["c_o"], cb_c),
+    (["d_i"], ["d_o"], cb_d),
+    (["e_i"], ["e_o"], cb_e),
+    ([], ["n2_o"], cb_n2),
 ]
 
 # Turn the in/output lists into dicts keyed by config field name with filename values
-named_file_tasks = [
-    tuple({field: getattr(config, field) for field in files} for files in task)
-    for task in file_tasks
+tasks = [
+    {
+        "src": {field: getattr(config, field) for field in inputs},
+        "dst": {field: getattr(config, field) for field in outputs},
+        "fn": func,
+    }
+    for inputs, outputs, func in task_fields
 ]
 
-step = Step(name="Demo Step", tasks=[{"src": s, "dst": d} for s, d in named_file_tasks])
+step = Step(name="Demo Step", tasks=tasks)
 run_step(step)

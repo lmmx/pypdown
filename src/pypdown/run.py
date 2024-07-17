@@ -6,10 +6,8 @@ __all__ = ["run_step"]
 
 
 def task_runner(task: AvailableTask, context: RunContext) -> None:
-    print(f"Hello world {task.model_dump(mode='json')}")
-    for name, target in task.dst.items():
-        print(f"Touched {name}: {target}")
-        target.touch()
+    print(f"Hello world {task.model_dump(mode='json', exclude='fn')}")
+    task.fn.__call__(**task.src, **task.dst)
 
 
 def run_step(step: Step):
@@ -36,7 +34,9 @@ def run_step(step: Step):
             if not prev_completed:
                 bail = True
                 print("(!) Incomplete previous task detected, bailing")
-        task_repr = " --> ".join(map(str, (task.model_dump(mode="json").values())))
+        task_repr = " --> ".join(
+            map(str, (task.model_dump(include=["src", "dst"], mode="json").values())),
+        )
         print(f"\n--- Task {idx + 1} --- {task_repr}")
         if bail:
             print("(-) Bailing out of step, skipping task")
