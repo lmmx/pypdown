@@ -1,48 +1,52 @@
 [build-system]
-requires = ["pdm-backend"]
+requires = [
+    "pdm-backend",
+]
 build-backend = "pdm.backend"
 
 [project]
 name = "pypdown"
-version = "0.1.0"
+version = "0.1.1"
 description = "A Pydantic model-based approach to data pipelining with file I/O linting."
 authors = [
-  {name = "Louis Maddox", email = "louismmx@gmail.com"}
+    { name = "Louis Maddox", email = "louismmx@gmail.com" },
 ]
 dependencies = [
-  "pydantic>=2.8.2"
+    "pydantic>=2.8.2",
 ]
 requires-python = ">=3.10"
 readme = "README.md"
-license = {text = "MIT"}
 classifiers = [
-  "Development Status :: 4 - Beta",
-  "Intended Audience :: Developers",
-  "Operating System :: OS Independent",
-  "License :: OSI Approved :: MIT License",
-  "Programming Language :: Python",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12",
-  "Programming Language :: Python :: 3 :: Only",
-  "Topic :: Software Development :: Quality Assurance",
-  "Topic :: Software Development :: Testing",
-  "Topic :: Software Development :: Libraries",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Software Development :: Libraries",
 ]
+
+[project.license]
+text = "MIT"
 
 [tool.pdm]
 distribution = true
 
 [tool.pdm.dev-dependencies]
 docs = [
-  "mkdocs-material[recommended,imaging]>=9.5.2",
-  "mkdocs-section-index>=0.3.8",
-  "mkdocs>=1.5.3",
-  "mkdocstrings[python]>=0.24.0"
+    "mkdocs-material[recommended,imaging]>=9.5.2",
+    "mkdocs-section-index>=0.3.8",
+    "mkdocs>=1.5.3",
+    "mkdocstrings[python]>=0.24.0",
 ]
 test = [
-  "pytest>=8.2.2"
+    "pytest>=8.2.2",
 ]
 vercel = [
-  "urllib3<2"
+    "urllib3<2",
 ]
