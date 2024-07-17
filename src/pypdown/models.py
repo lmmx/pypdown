@@ -71,14 +71,17 @@ class Step(BaseModel):
     @computed_field
     @property
     def tasks(self) -> list[Task]:
-        return [
-            Task(
+        tasks = []
+        for tr in self.task_refs:
+            task = Task(
                 src=self.config.model_dump(include=tr.src),
                 dst=self.config.model_dump(include=tr.dst),
                 fn=tr.fn,
             )
-            for tr in self.task_refs
-        ]
+            # `model_dump(include=[...])` silently drops names missing not in the config
+            assert not (no_src := set(tr.src) - set(task.src)), f"Not in src: {no_src}"
+            assert not (no_dst := set(tr.dst) - set(task.dst)), f"Not in dst: {no_dst}"
+        return tasks
 
 
 AvailableTA = TypeAdapter(list[OnErrorOmit[AvailableTask]])
