@@ -30,31 +30,35 @@ from pypdown.models import Step
 from pydantic import BaseModel
 from pathlib import Path
 
+
 class StepParams(BaseModel):
     input_file: Path = "input.txt"
     output_file: Path = "output.txt"
     final_file: Path = "final.txt"
 
+
 def process_input(input_file: Path, output_file: Path, config: StepParams):
     """Process input file and create output file."""
     output_file.write_text(input_file.read_text().upper())
 
+
 def finalize_output(output_file: Path, final_file: Path, config: StepParams):
     """Process output file and create final file."""
     final_file.write_text(f"Processed: {output_file.read_text()}")
+
 
 config = StepParams()
 
 # Define your pipeline tasks
 tasks = [
     {
-        "src": {"input_file": config.input_file},
-        "dst": {"output_file": config.output_file},
+        "src": config.model_dump(include=["input_file"]),
+        "dst": config.model_dump(include=["output_file"]),
         "fn": process_input,
     },
     {
-        "src": {"output_file": config.output_file},
-        "dst": {"final_file": config.final_file},
+        "src": config.model_dump(include=["output_file"]),
+        "dst": config.model_dump(include=["final_file"]),
         "fn": finalize_output,
     },
 ]

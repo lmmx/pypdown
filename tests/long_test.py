@@ -1,7 +1,8 @@
+from pathlib import Path
+
+from pydantic import BaseModel
 from pypdown import run_step
 from pypdown.models import Step
-from pydantic import BaseModel
-from pathlib import Path
 
 
 def test_long_example():
@@ -65,8 +66,8 @@ def test_long_example():
     # Turn the in/output lists into dicts keyed by config field name with filename values
     tasks = [
         {
-            "src": {field: getattr(config, field) for field in inputs},
-            "dst": {field: getattr(config, field) for field in outputs},
+            "src": config.model_dump(include=inputs),
+            "dst": config.model_dump(include=outputs),
             "fn": func,
         }
         for inputs, outputs, func in task_fields

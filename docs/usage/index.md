@@ -28,13 +28,13 @@ config = StepParams()
 # Define your pipeline tasks
 tasks = [
     {
-        "src": {"input_file": config.input_file},
-        "dst": {"output_file": config.output_file},
+        "src": config.model_dump(include=["input_file"]),
+        "dst": config.model_dump(include=["output_file"]),
         "fn": process_input,
     },
     {
-        "src": {"output_file": config.output_file},
-        "dst": {"final_file": config.final_file},
+        "src": config.model_dump(include=["output_file"]),
+        "dst": config.model_dump(include=["final_file"]),
         "fn": finalize_output,
     },
 ]
