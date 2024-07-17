@@ -80,5 +80,5 @@ tasks = [
     for inputs, outputs, func in task_fields
 ]
 
-step = Step(name="Demo Step", tasks=tasks)
+step = Step(name="Demo Step", tasks=tasks, config=config)
 run_step(step)
