@@ -13,7 +13,7 @@ file_tasks = [
 
 # Turn the in/output lists into dicts keyed by _-slugged filename
 named_file_tasks = [
-    tuple({file.replace('.', '_'): file for file in files} for files in task)
+    tuple({file.replace(".", "_"): file for file in files} for files in task)
     for task in file_tasks
 ]
 
