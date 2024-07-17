@@ -2,7 +2,7 @@
 
 A Pydantic model-based approach to data pipelining with file I/O linting.
 
-[![PyPI version](https://badge.fury.io/py/pypdown.svg)](https://badge.fury.io/py/pypdown)
+[![PyPI Version](https://img.shields.io/pypi/v/pypdown)](https://pypi.org/project/pypdown/)
 [![Python Versions](https://img.shields.io/pypi/pyversions/pypdown.svg)](https://pypi.org/project/pypdown/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Documentation](https://img.shields.io/badge/docs-pypdown.vercel.app-blue)](https://pypdown.vercel.app/)
