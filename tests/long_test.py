@@ -64,14 +64,9 @@ def test_long_example():
     ]
 
     # Turn the in/output lists into dicts keyed by config field name with filename values
-    tasks = [
-        {
-            "src": config.model_dump(include=inputs),
-            "dst": config.model_dump(include=outputs),
-            "fn": func,
-        }
-        for inputs, outputs, func in task_fields
+    task_refs = [
+        dict(src=inputs, dst=outputs, fn=fn) for inputs, outputs, fn in task_fields
     ]
 
-    step = Step(name="Demo Step", tasks=tasks, config=config)
+    step = Step(name="Large Step", task_refs=task_refs, config=config)
     run_step(step)

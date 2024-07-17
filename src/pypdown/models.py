@@ -1,10 +1,17 @@
 """Pydantic models to represent the tasks within a step in a data pipeline."""
 
+from collections.abc import Callable
 from pathlib import Path
 from typing import TypeVar
-from collections.abc import Callable
 
-from pydantic import BaseModel, FilePath, NewPath, OnErrorOmit, TypeAdapter
+from pydantic import (
+    BaseModel,
+    FilePath,
+    NewPath,
+    OnErrorOmit,
+    TypeAdapter,
+    computed_field,
+)
 
 __all__ = [
     "AvailableTask",
@@ -44,6 +51,13 @@ class Task(Executable):
     dst: dict[str, Path]
 
 
+class TaskRef(Executable):
+    """A TaskRef is dereferenced to a Task by looking up src/dst fields on a config."""
+
+    src: list[str]
+    dst: list[str]
+
+
 C = TypeVar("C", bound=BaseModel)
 
 
@@ -51,8 +65,20 @@ class Step(BaseModel):
     """A named step in a data pipeline, split up into tasks with specified file I/O."""
 
     name: str
-    tasks: list[Task]
+    task_refs: list[TaskRef]
     config: C
+
+    @computed_field
+    @property
+    def tasks(self) -> list[Task]:
+        return [
+            Task(
+                src=self.config.model_dump(include=tr.src),
+                dst=self.config.model_dump(include=tr.dst),
+                fn=tr.fn,
+            )
+            for tr in self.task_refs
+        ]
 
 
 AvailableTA = TypeAdapter(list[OnErrorOmit[AvailableTask]])

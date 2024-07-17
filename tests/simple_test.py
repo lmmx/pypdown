@@ -27,18 +27,11 @@ def test_simple_example():
         (["a1_i", "a2_i"], ["a_o"], cb_a),
         (["a_o", "b_i"], ["b_o"], cb_b),
     ]
+    task_refs = [
+        dict(src=inputs, dst=outputs, fn=fn) for inputs, outputs, fn in task_fields
+    ]
 
     config = StepParams()
 
-    # Turn the in/output lists into dicts keyed by config field name with filename values
-    tasks = [
-        {
-            "src": config.model_dump(include=inputs),
-            "dst": config.model_dump(include=outputs),
-            "fn": func,
-        }
-        for inputs, outputs, func in task_fields
-    ]
-
-    step = Step(name="Demo Step", tasks=tasks, config=config)
+    step = Step(name="Small Step", task_refs=task_refs, config=config)
     run_step(step)

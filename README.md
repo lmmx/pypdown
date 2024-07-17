@@ -49,22 +49,22 @@ def finalize_output(output_file: Path, final_file: Path, config: StepParams):
 
 config = StepParams()
 
-# Define your pipeline tasks
-tasks = [
+# Define your pipeline tasks by reference to config field names
+task_refs = [
     {
-        "src": config.model_dump(include=["input_file"]),
-        "dst": config.model_dump(include=["output_file"]),
+        "src": ["input_file"],
+        "dst": ["output_file"],
         "fn": process_input,
     },
     {
-        "src": config.model_dump(include=["output_file"]),
-        "dst": config.model_dump(include=["final_file"]),
+        "src": ["output_file"],
+        "dst": ["final_file"],
         "fn": finalize_output,
     },
 ]
 
 # Create a Step
-step = Step(name="Example Pipeline Step", tasks=tasks, config=config)
+step = Step(name="Example Pipeline Step", task_refs=task_refs, config=config)
 
 # Run the step
 run_step(step)
