@@ -2,6 +2,20 @@
 build-backend = "uv_build"
 requires = ["uv_build>=0.11.6,<0.12"]
 
+[dependency-groups]
+docs = [
+  "mkdocs-material[recommended,imaging]>=9.5.2",
+  "mkdocs-section-index>=0.3.8",
+  "mkdocs>=1.5.3",
+  "mkdocstrings[python]>=0.24.0"
+]
+test = [
+  "pytest>=8.2.2"
+]
+vercel = [
+  "urllib3<2"
+]
+
 [project]
 name = "pypdown"
 version = "0.1.4"
@@ -39,20 +53,5 @@ dev = [
 [tool.pdm]
 distribution = true
 
-[dependency-groups]
-docs = [
-  "mkdocs-material[recommended,imaging]>=9.5.2",
-  "mkdocs-section-index>=0.3.8",
-  "mkdocs>=1.5.3",
-  "mkdocstrings[python]>=0.24.0"
-]
-test = [
-  "pytest>=8.2.2"
-]
-vercel = [
-  "urllib3<2"
-]
-
 [tool.uv]
 default-groups = ["docs", "test"]
-
