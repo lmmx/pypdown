@@ -1,57 +1,68 @@
 from pathlib import Path
 
 from pydantic import BaseModel
+
 from pypdown import run_step
 from pypdown.models import Step
 
 
-def test_long_example():
+def test_long_example(tmp_path: Path):
     class StepParams(BaseModel):
-        n1_o: Path = "nil1.out"
-        n2_o: Path = "nil2.out"
-        a_i: Path = "a.in"
-        a_o: Path = "a.out"
-        b_o: Path = "b.out"
-        c_o: Path = "c.out"
-        d_i: Path = "d.in"
-        d_o: Path = "d.out"
-        e_i: Path = "e.in"
-        e_o: Path = "e.out"
+        n1_o: Path
+        n2_o: Path
+        a_i: Path
+        a_o: Path
+        b_o: Path
+        c_o: Path
+        d_i: Path
+        d_o: Path
+        e_i: Path
+        e_o: Path
 
-    config = StepParams()
+    # Build all paths inside tmp dir
+    config = StepParams(
+        n1_o=tmp_path / "nil1.out",
+        n2_o=tmp_path / "nil2.out",
+        a_i=tmp_path / "a.in",
+        a_o=tmp_path / "a.out",
+        b_o=tmp_path / "b.out",
+        c_o=tmp_path / "c.out",
+        d_i=tmp_path / "d.in",
+        d_o=tmp_path / "d.out",
+        e_i=tmp_path / "e.in",
+        e_o=tmp_path / "e.out",
+    )
+
+    # Create required input files
+    config.a_i.touch()
+    config.d_i.touch()
+    config.e_i.touch()
 
     def cb_n1(n1_o: Path, config: StepParams):
         n1_o.touch()
-        print(f"Touched {n1_o=}")
 
     def cb_a(a_i: Path, a_o: Path, config: StepParams):
         assert a_i.exists()
         a_o.touch()
-        print(f"Touched {a_o=}")
 
     def cb_b(a_o: Path, b_o: Path, config: StepParams):
         assert a_o.exists()
         b_o.touch()
-        print(f"Touched {b_o=}")
 
     def cb_c(a_o: Path, b_o: Path, c_o: Path, config: StepParams):
         assert a_o.exists() and b_o.exists()
         c_o.touch()
-        print(f"Touched {c_o=}")
 
     def cb_d(d_i: Path, d_o: Path, config: StepParams):
         assert d_i.exists()
         d_o.touch()
-        print(f"Touched {d_o=}")
 
     def cb_e(e_i: Path, e_o: Path, config: StepParams):
         assert e_i.exists()
         e_o.touch()
-        print(f"Touched {e_o=}")
 
     def cb_n2(n2_o: Path, config: StepParams):
         n2_o.touch()
-        print(f"Touched {n2_o=}")
 
     task_fields = [
         ([], ["n1_o"], cb_n1),
@@ -63,7 +74,6 @@ def test_long_example():
         ([], ["n2_o"], cb_n2),
     ]
 
-    # Turn the in/output lists into dicts keyed by config field name with filename values
     task_refs = [
         dict(src=inputs, dst=outputs, fn=fn) for inputs, outputs, fn in task_fields
     ]
