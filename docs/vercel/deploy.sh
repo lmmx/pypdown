@@ -1,17 +1,12 @@
 #!/bin/bash
+set -euo pipefail
 
-curl -Ls https://micromamba.snakepit.net/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
+echo "INSTALLING UV"
+curl -LsSf https://astral.sh/uv/install.sh | sh
+export PATH="$HOME/.local/bin:$PATH"
 
-./bin/micromamba shell init -s bash -r ~/micromamba
-# Python interpreter lives at /vercel/micromamba/bin/python
-source ~/.bashrc
+echo "UV VERSION"
+uv --version
 
-# activate the environment and install a new version of Python
-micromamba activate
-micromamba install python=3.12 -c conda-forge -y
-
-# install the dependencies
-python --version
-python -m pip install pdm 'urllib3<2'
-pdm install --no-default -dG docs -v
-pdm run mkdocs
+echo "SYNCING DOCS + VERCEL DEPS"
+uv sync --python 3.11 --frozen --no-default-groups --group docs
