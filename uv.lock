@@ -3,7 +3,7 @@ revision = 3
 requires-python = ">=3.10"
 
 [options]
-exclude-newer = "2026-04-12T21:59:25.848858456Z"
+exclude-newer = "2026-04-12T22:06:34.480441821Z"
 exclude-newer-span = "P3D"
 
 [[package]]
@@ -545,7 +545,7 @@ wheels = [
 
 [[package]]
 name = "pypdown"
-version = "0.1.4"
+version = "0.1.5"
 source = { editable = "." }
 dependencies = [
     { name = "pydantic" },
