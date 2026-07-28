@@ -1,6 +1,6 @@
 """Control flow using the Pydantic runtime file I/O checks."""
 
-from .models import AvailableTA, AvailableTask, CompletedTA, Step, RunContext
+from .models import AvailableTA, AvailableTask, CompletedTA, RunContext, Step
 
 __all__ = ["run_step"]
 
